@@ -8,6 +8,7 @@ import java.util.Collections;
 
     1-13 CARD VALUES
 */
+//hi
 public class Deck {
         
         public ArrayList<String> deck = new ArrayList<String>();
