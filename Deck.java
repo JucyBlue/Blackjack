@@ -17,7 +17,7 @@ public class Deck {
             for(int k = 0; k < num; k++){
                 for(int i = 0; i < 4;i++){
                     for(int j = 1; j<14;j++){
-                        deck.add(j +"-"+ i);
+                        deck.add(j +"+"+ i);
                     }
                 }
             }
