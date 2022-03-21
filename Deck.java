@@ -30,4 +30,9 @@ public class Deck {
     public int deckSize(){
         return deck.size();
     } 
+
+    public void pullCard(){
+        System.out.println(deck.get(0));
+        System.out.println(deck.get(0));
+    }
 }
