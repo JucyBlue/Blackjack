@@ -1,7 +1,9 @@
 public class Core{
     public static void main(String[] args){
-        System.out.println("Hellooooo!");
-        //this is testing
-        
+        Deck myDeck = new Deck(3);
+        myDeck.shuffle();
+        for(int i =0; i < myDeck.deckSize(); i++){
+            System.out.println(myDeck.deck.get(i));
+        }
     }
 }
