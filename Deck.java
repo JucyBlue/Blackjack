@@ -8,7 +8,6 @@ import java.util.Collections;
 
     1-13 CARD VALUES
 */
-//hi
 public class Deck {
         
         public ArrayList<String> deck = new ArrayList<String>();
@@ -32,8 +31,11 @@ public class Deck {
         return deck.size();
     } 
 
-    public void pullCard(){
-        System.out.println(deck.get(0));
-        System.out.println(deck.get(0));
+    public String pullCard(){
+        //System.out.println(deck.get(0));
+        String topCard = deck.get(0);
+        deck.remove(0);
+        return topCard;
+        
     }
 }

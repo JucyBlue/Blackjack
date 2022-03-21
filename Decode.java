@@ -1,6 +1,6 @@
-public class Hand {
-    public Hand(){
-
+public class Decode {
+    public Decode(){
+        
     }
 
     public void clear(){
