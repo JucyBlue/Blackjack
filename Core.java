@@ -2,6 +2,7 @@ import java.util.ArrayList;
 public class Core{
     private static ArrayList<String> playerHand = new ArrayList<String>();
     static Deck myDeck = new Deck(3);
+    static Decode decode = new Decode();
     public static void main(String[] args){
         
         myDeck.shuffle();
@@ -15,6 +16,9 @@ public class Core{
         playerHand.add(myDeck.pullCard());
         playerHand.add(myDeck.pullCard());
     }
+
+
+
     
 
 
