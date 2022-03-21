@@ -5,11 +5,11 @@ public class Decode {
         
     }
 
-    public ArrayList<String> decodeList(ArrayList<String> oldList, ArrayList<String> deck){ //2D array might be easier
+    public ArrayList<String> decodeList(ArrayList<String> oldList){ //2D array might be easier
         ArrayList<String> newList = new ArrayList<String>();
+        System.out.println("---" + singleValue(oldList.get(0)));
         for(int i = 0; i < oldList.size(); i++){
             //newList.add(i, getNum(deck.get(i)));
-            
         }
 
         return newList;
@@ -20,6 +20,19 @@ public class Decode {
     public void newHand(){
         
     }
+
+    private int singleValue(String wholeValue){
+            if(wholeValue.length() == 3){
+                return Character.getNumericValue(wholeValue.charAt(0));
+            }
+            else{
+                return Integer.parseInt(wholeValue.substring(0, 1));
+            }
+            
+
+    }
+
+
 
     private String getNum(int value){
         switch (value) {
