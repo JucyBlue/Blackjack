@@ -7,10 +7,10 @@ public class Decode {
 
     public ArrayList<String> decodeList(ArrayList<String> oldList){ //2D array might be easier
         ArrayList<String> newList = new ArrayList<String>();
-        System.out.println("---" + singleValue(oldList.get(0)));
+        //System.out.println("---" + singleValue(oldList.get(0)));
         for(int i = 0; i < oldList.size(); i++){
-            //newList.add(i, getNum(deck.get(i)));
-        }
+            newList.add(i,(getNum(singleValue(oldList.get(i), "num")) + " of " + getSuit(singleValue(oldList.get(i), "suit"))));
+        } 
 
         return newList;
 
@@ -21,13 +21,22 @@ public class Decode {
         
     }
 
-    private int singleValue(String wholeValue){
-            if(wholeValue.length() == 3){
-                return Character.getNumericValue(wholeValue.charAt(0));
+    private int singleValue(String wholeValue, String type){
+            int decoded = -1;
+            if(type == "num"){
+                if(wholeValue.length() == 3){
+                    decoded = Character.getNumericValue(wholeValue.charAt(0));
+                }
+                else{
+                    decoded = Integer.parseInt(wholeValue.substring(0, 2));
+                }
             }
             else{
-                return Integer.parseInt(wholeValue.substring(0, 1));
+                decoded = Character.getNumericValue(wholeValue.charAt(wholeValue.length()-1));
             }
+           
+
+            return decoded;
             
 
     }
@@ -49,6 +58,16 @@ public class Decode {
             case 11:  return "Jack";
             case 12:  return "Queen";
             default:  return "King"; 
+        }
+    }
+
+    private String getSuit(int value){
+        
+        switch (value) {
+            case 0:   return "Spades";
+            case 1:   return "Hearts";
+            case 2:   return "Diamonds";
+            default: return "Clubs";
         }
     }
 }
