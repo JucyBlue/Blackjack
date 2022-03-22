@@ -36,6 +36,5 @@ public class Deck {
         String topCard = deck.get(0);
         deck.remove(0);
         return topCard;
-        
     }
 }

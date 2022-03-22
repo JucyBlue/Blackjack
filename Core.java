@@ -16,6 +16,7 @@ public class Core{
         System.out.println("\n");
         printList(myDeck.deck,hide);
         displayCards();
+        printList(myDeck.deck,hide);
         
     }
 
@@ -42,7 +43,7 @@ public class Core{
 
     private static void displayCards(){
         clearConsole();
-        System.out.print("---------------Blackjack---------------\nDealers Hand:\n" 
+        System.out.print("---------------Blackjack---------------\nDrug Dealer Hand:\n" 
         + printList(dealerHand, hide) + "\n\nYour Hand:\n" + printList(playerHand, hide));
     }
 
@@ -50,10 +51,5 @@ public class Core{
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-
-
-
-    
-
 
 }
