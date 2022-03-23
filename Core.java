@@ -12,12 +12,8 @@ public class Core{
         //myDeck.shuffle();
         newHand();
         
-        printList(playerHand, hide);
         System.out.println("\n");
-        printList(myDeck.deck,hide);
         displayCards();
-        printList(myDeck.deck,hide);
-        
     }
 
 
@@ -26,16 +22,17 @@ public class Core{
         playerHand.add(myDeck.pullCard());
         dealerHand.add(myDeck.pullCard());
         dealerHand.add(myDeck.pullCard());
-        
     }
 
     private static String printList(ArrayList<String> list, boolean hide){
         String combindedString = "";
         decodedList = decode.decodeList(list);
         System.out.println("\n");
-        for(int i = 0; i < list.size(); i++){
-            combindedString = combindedString + "- " +decodedList.get(i);
+        for(int i = 0; i < list.size(); i++){ // if hide is true and index == 2 then hide the string
+            if(hide && i == 1) combindedString += "- ?? of ?????"; 
+            else combindedString = combindedString + "- " +decodedList.get(i);
             if(i+1 < list.size()) combindedString = combindedString + "\n";
+            
         }
         return combindedString;
     }
@@ -44,7 +41,7 @@ public class Core{
     private static void displayCards(){
         clearConsole();
         System.out.print("---------------Blackjack---------------\nDrug Dealer Hand:\n" 
-        + printList(dealerHand, hide) + "\n\nYour Hand:\n" + printList(playerHand, hide));
+        + printList(dealerHand, true) + "\n\nYour Hand:\n" + printList(playerHand, false));
     }
 
     public static void clearConsole(){
