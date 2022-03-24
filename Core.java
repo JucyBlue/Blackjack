@@ -8,12 +8,17 @@ public class Core{
     static boolean hide = true;
     
     public static void main(String[] args){
+        clearConsole();
+        //play();
+        myDeck.shuffle();
+        playerHand.add(myDeck.pullCard());
+        playerHand.add(myDeck.pullCard());
+        System.out.println(printList(playerHand, false, true));
+
+        System.out.println(myDeck.check(playerHand));
         
-        //myDeck.shuffle();
-        newHand();
+
         
-        System.out.println("\n");
-        displayCards();
     }
 
 
@@ -22,26 +27,40 @@ public class Core{
         playerHand.add(myDeck.pullCard());
         dealerHand.add(myDeck.pullCard());
         dealerHand.add(myDeck.pullCard());
+        displayCards();
+        input(myDeck.check(playerHand));
     }
 
-    private static String printList(ArrayList<String> list, boolean hide){
+    private static String printList(ArrayList<String> list, boolean hide, boolean decodeTheList){
         String combindedString = "";
-        decodedList = decode.decodeList(list);
+        if(decodeTheList) decodedList = decode.decodeList(list);
+        else decodedList = list;
         System.out.println("\n");
         for(int i = 0; i < list.size(); i++){ // if hide is true and index == 2 then hide the string
             if(hide && i == 1) combindedString += "- ?? of ?????"; 
-            else combindedString = combindedString + "- " +decodedList.get(i);
+            else combindedString += "- " +decodedList.get(i);
             if(i+1 < list.size()) combindedString = combindedString + "\n";
-            
         }
         return combindedString;
+    }
+
+    private static void input(boolean pair){
+        System.out.print("\n|1-HIT | 2-STAND | 3-DOUBLE |");
+    }
+
+    private static void play(){
+        myDeck.shuffle();
+        newHand();
+       
     }
 
 
     private static void displayCards(){
         clearConsole();
         System.out.print("---------------Blackjack---------------\nDrug Dealer Hand:\n" 
-        + printList(dealerHand, true) + "\n\nYour Hand:\n" + printList(playerHand, false));
+        + printList(dealerHand, true ,true) + "\n\nYour Hand:\n" + printList(playerHand, false,true) 
+        + "\n---------------------------------------");
+        
     }
 
     public static void clearConsole(){
