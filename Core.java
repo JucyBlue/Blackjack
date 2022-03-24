@@ -8,27 +8,22 @@ public class Core{
     static boolean hide = true;
     
     public static void main(String[] args){
-        clearConsole();
-        //play();
-        myDeck.shuffle();
-        playerHand.add(myDeck.pullCard());
-        playerHand.add(myDeck.pullCard());
-        System.out.println(printList(playerHand, false, true));
-
-        System.out.println(myDeck.check(playerHand));
-        
-
-        
+        play();
     }
 
+    private static void play(){
+        clearConsole();
+        myDeck.shuffle();
+        newHand();
+        displayCards();
+        input(myDeck.check(playerHand));
+    }
 
     public static void newHand(){
         playerHand.add(myDeck.pullCard());
         playerHand.add(myDeck.pullCard());
         dealerHand.add(myDeck.pullCard());
         dealerHand.add(myDeck.pullCard());
-        displayCards();
-        input(myDeck.check(playerHand));
     }
 
     private static String printList(ArrayList<String> list, boolean hide, boolean decodeTheList){
@@ -44,21 +39,17 @@ public class Core{
         return combindedString;
     }
 
-    private static void input(boolean pair){
+    private static void input(boolean pair){ // myDeck.check(playerHand) is used to get the bool "pair"
         System.out.print("\n|1-HIT | 2-STAND | 3-DOUBLE |");
+        if(pair) System.out.print(" SPLIT |");
     }
 
-    private static void play(){
-        myDeck.shuffle();
-        newHand();
-       
-    }
 
 
     private static void displayCards(){
         clearConsole();
         System.out.print("---------------Blackjack---------------\nDrug Dealer Hand:\n" 
-        + printList(dealerHand, true ,true) + "\n\nYour Hand:\n" + printList(playerHand, false,true) 
+        + printList(dealerHand, true ,true) + "\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
         + "\n---------------------------------------");
         
     }

@@ -41,8 +41,6 @@ public class Decode {
 
     }
 
-
-
     private String getNum(int value){
         switch (value) {
             case 1:   return "Ace";
