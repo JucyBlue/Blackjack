@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Scanner;
+//System.out.println(x);
 public class Core{
     private static ArrayList<String> playerHand = new ArrayList<String>();
     private static ArrayList<String> dealerHand = new ArrayList<String>();
@@ -6,7 +8,7 @@ public class Core{
     static Deck myDeck = new Deck(1);
     static Decode decode = new Decode();
     static boolean hide = true;
-    
+    static Scanner scan = new Scanner(System.in);
     public static void main(String[] args){
         play();
     }
@@ -40,18 +42,33 @@ public class Core{
     }
 
     private static void input(boolean pair){ // myDeck.check(playerHand) is used to get the bool "pair"
-        System.out.print("\n|1-HIT | 2-STAND | 3-DOUBLE |");
-        if(pair) System.out.print(" SPLIT |");
+        int input;
+            //currently trying to make a look that checks for vaild inputs
+
+
+            System.out.print("\n| 1-HIT | 2-STAND | 3-DOUBLE |");
+            if(pair) System.out.print("4-SPLIT |");
+            System.out.print("\n:");
+            
+
+            do{
+                input = scan.nextInt();
+                if(scan.hasNextInt()) break;
+                else invalid("number");
+
+            }
+            while(true);
+            System.out.println(input);
+
+        
+
     }
-
-
 
     private static void displayCards(){
         clearConsole();
         System.out.print("---------------Blackjack---------------\nDrug Dealer Hand:\n" 
         + printList(dealerHand, true ,true) + "\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
         + "\n---------------------------------------");
-        
     }
 
     public static void clearConsole(){
@@ -59,4 +76,11 @@ public class Core{
         System.out.flush();
     }
 
+    public static void invalid(String type){
+        
+        System.out.println("Invaid input, please enter a " + type + "\n(ENTER)");
+        scan.nextLine();
+
+
+    }
 }
