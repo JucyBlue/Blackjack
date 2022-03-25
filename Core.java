@@ -10,6 +10,9 @@ public class Core{
     static boolean hide = true;
     static Scanner scan = new Scanner(System.in);
     public static void main(String[] args){
+        //clearConsole();
+        System.out.println(playerHand.size() + "---pp");
+
         play();
     }
 
@@ -17,7 +20,6 @@ public class Core{
         clearConsole();
         myDeck.shuffle();
         newHand();
-        displayCards();
         input(myDeck.check(playerHand));
     }
 
@@ -42,34 +44,62 @@ public class Core{
     }
 
     private static void input(boolean pair){ // myDeck.check(playerHand) is used to get the bool "pair"
-        int input;
-            //currently trying to make a look that checks for vaild inputs
-
-
-            System.out.print("\n| 1-HIT | 2-STAND | 3-DOUBLE |");
-            if(pair) System.out.print("4-SPLIT |");
-            System.out.print("\n:");
+            int input;
             
-
+            
             do{
-                input = scan.nextInt();
-                if(scan.hasNextInt()) break;
-                else invalid("number");
-
+                
+                clearConsole();
+                displayCards();
+                checkForBust(playerHand);
+                pause();
+                System.out.print("\n| 1-HIT | 2-STAND | 3-DOUBLE |");
+                if(pair) System.out.print("4-SPLIT |");
+                System.out.print("\n:");
+                if(scan.hasNextInt()) {
+                    input = scan.nextInt();
+                    break;
+                }else{
+                    invalid("Number");
+                }
             }
             while(true);
-            System.out.println(input);
+            
+            switch(input){
+                case 1:
+                    hit();
+                    break;
+                case 2:
 
+                    break;
+                
+
+            }
+    }
+
+    public static void hit(){
+        playerHand.add(myDeck.pullCard());
         
-
+        input(myDeck.check(playerHand));
     }
 
     private static void displayCards(){
         clearConsole();
-        System.out.print("---------------Blackjack---------------\nDrug Dealer Hand:\n" 
+        System.out.print("---------------Blackjack---------------\nDrug Dealers Hand:\n" 
         + printList(dealerHand, true ,true) + "\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
         + "\n---------------------------------------");
     }
+
+    private static void checkForBust(ArrayList<String> list){
+        int total = 0;
+        for(int i = 0; i < list.size(); i++){
+            total += decode.singleValue(list.get(i), "num");
+        }
+        System.out.println(total + "==");
+
+    }
+
+    
 
     public static void clearConsole(){
         System.out.print("\033[H\033[2J");
@@ -79,8 +109,12 @@ public class Core{
     public static void invalid(String type){
         
         System.out.println("Invaid input, please enter a " + type + "\n(ENTER)");
-        scan.nextLine();
+        pause();
+    }
 
+    private static void pause(){
+        scan.nextLine();
+        scan.nextLine();
 
     }
 }

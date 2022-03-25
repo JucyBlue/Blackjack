@@ -13,7 +13,6 @@ public class Deck {
         public ArrayList<String> deck = new ArrayList<String>();
 
         public Deck(int num){
-           
             for(int k = 0; k < num; k++){
                 for(int i = 0; i < 4;i++){
                     for(int j = 1; j<14;j++){

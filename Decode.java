@@ -21,7 +21,7 @@ public class Decode {
         
     }
 
-    private int singleValue(String wholeValue, String type){
+    public int singleValue(String wholeValue, String type){
             int decoded = -1;
             if(type == "num"){
                 if(wholeValue.length() == 3){
