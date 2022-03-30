@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-//System.out.println(x);
 public class Core{
     private static ArrayList<String> playerHand = new ArrayList<String>();
     private static ArrayList<String> dealerHand = new ArrayList<String>();
@@ -11,6 +10,7 @@ public class Core{
     static Scanner scan = new Scanner(System.in);
     static boolean pair = false;
     static boolean dealersPlay = false;
+    static int pot = 343;
     public static void main(String[] args){
         play();
     }
@@ -67,8 +67,9 @@ public class Core{
                     break;
                 case 2:
                     break;
-                
-
+                default:
+                    
+                    break;
             }
     }
 
@@ -117,9 +118,9 @@ public class Core{
 
     private static void displayCards(boolean hideDealer){
         clearConsole();
-        System.out.print("---------------Blackjack---------------\nDrug Dealers Hand:\n" 
-        + printList(dealerHand, hideDealer ,true) + "\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
-        + "\n---------------------------------------");
+        System.out.printf("BANK:\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:\n%s\n---------------------------------------", printList(dealerHand, hideDealer ,true), pot ,printList(playerHand, false, true));
+       // + printList(dealerHand, hideDealer ,true) +"\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
+       // + "\n---------------------------------------");
     }
 
     private static boolean checkForBust(ArrayList<String> list){
