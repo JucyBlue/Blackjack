@@ -36,7 +36,7 @@ public class Deck {
         return topCard;
     }
 
-    public boolean check(ArrayList<String> playerHand){
+    public boolean checkPair(ArrayList<String> playerHand){
         return (playerHand.get(0).substring(0, playerHand.get(0).length() - 2)).equals(playerHand.get(1).substring(0, playerHand.get(1).length() - 2));
     }
 }
