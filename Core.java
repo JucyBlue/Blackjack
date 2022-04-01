@@ -10,7 +10,8 @@ public class Core{
     static Scanner scan = new Scanner(System.in);
     static boolean pair = false;
     static boolean dealersPlay = false;
-    static int pot = 343;
+    static int pot = 5;
+    static int bank = 1000;
     public static void main(String[] args){
         play();
     }
@@ -64,11 +65,14 @@ public class Core{
             switch(input){
                 case 1:
                     hit();
+                    input();
                     break;
                 case 2:
                     break;
                 default:
-                    
+                    bank -= pot;
+                    pot *= 2;
+                    hit();
                     break;
             }
     }
@@ -104,6 +108,12 @@ public class Core{
                 System.out.println("push");
                 break;
         }
+        System.out.printf(" P:%s D:%s", getTotal(playerHand), getTotal(dealerHand));
+        System.out.println("\n(ENTER)");
+        pause();
+        
+        play();
+
     }
 
     public static void hit(){
@@ -111,14 +121,11 @@ public class Core{
         if(checkForBust(playerHand)){
             whoWins();
         } 
-        else{
-            input();
-        }
     }
 
     private static void displayCards(boolean hideDealer){
         clearConsole();
-        System.out.printf("BANK:\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:\n%s\n---------------------------------------", printList(dealerHand, hideDealer ,true), pot ,printList(playerHand, false, true));
+        System.out.printf("BANK:%s\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:\n%s\n---------------------------------------",bank ,printList(dealerHand, hideDealer ,true), pot ,printList(playerHand, false, true));
        // + printList(dealerHand, hideDealer ,true) +"\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
        // + "\n---------------------------------------");
     }
@@ -133,9 +140,13 @@ public class Core{
 
     private static int getTotal(ArrayList<String> list){
         int total = 0;
+        int singleValue;
         for(int i = 0; i < list.size(); i++){
-            total += decode.singleValue(list.get(i), "num");
+            singleValue = decode.singleValue(list.get(i), "num");
+            if(singleValue > 10) singleValue = 10;
+            total += singleValue;
         }
+        
         return total;
     }
 
