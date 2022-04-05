@@ -12,6 +12,7 @@ public class Core{
     static boolean dealersPlay = false;
     static int pot = 5;
     static int bank = 1000;
+    private static boolean checkForBust;
     public static void main(String[] args){
         play();
     }
@@ -63,16 +64,19 @@ public class Core{
             }
             while(true);
             switch(input){
-                case 1:
+                case 1: //HIT
                     hit();
                     input();
                     break;
-                case 2:
+                case 2: //STAND
                     break;
-                default:
+                case 3: //DOUBLE
                     bank -= pot;
                     pot *= 2;
                     hit();
+                case 4: //SPLIT
+                default:
+                    
                     break;
             }
     }
@@ -80,10 +84,8 @@ public class Core{
     public static void dealerPlay(){
         dealersPlay = true;
         while(getTotal(dealerHand) < 17){
-
             dealerHand.add(myDeck.pullCard());
             checkForBust(dealerHand);
-
         }
         show(false);
         handResults();
@@ -132,6 +134,7 @@ public class Core{
 
     private static boolean checkForBust(ArrayList<String> list){
         int total = getTotal(list);
+        System.out.println(total);
         if(total > 21) {
             return true;
         }
@@ -162,12 +165,12 @@ public class Core{
 
     private static int whoWins(){
         if(checkForBust(playerHand)){
-            return 2;
+            return 2; //player busts
         }
         else
         {
             if(checkForBust(dealerHand)){
-                return 2;
+                return 1; //dealer busts too
             }
             else{
                 if(getTotal(playerHand) > getTotal(dealerHand)){
@@ -177,7 +180,8 @@ public class Core{
                     return 3;
                 }
                 else{
-                    return 2;
+                    return 2; 
+                    
                 }
             }
         }
@@ -195,7 +199,5 @@ public class Core{
                 if(pair) System.out.print("4-SPLIT |");
                 System.out.print("\n:");    
     }
-
-
 
 }
