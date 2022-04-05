@@ -1,2 +1,3 @@
 3/31/2022 - Barely function blackjack
 4/01/2022 - Fully funcation blackjack(No betting)
+4/04/2022 - Fixed false win,basic pot(No splitting yet...)

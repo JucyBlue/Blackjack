@@ -30,6 +30,10 @@ public class Deck {
         return deck.size();
     } 
 
+    public void splitTemp(){
+        Collections.sort(deck);
+    }
+
     public String pullCard(){
         String topCard = deck.get(0);
         deck.remove(0);

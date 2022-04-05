@@ -12,6 +12,7 @@ public class Core{
     static boolean dealersPlay = false;
     static int pot = 5;
     static int bank = 1000;
+    static String splitCard = "";
     private static boolean checkForBust;
     public static void main(String[] args){
         play();
@@ -22,10 +23,12 @@ public class Core{
         playerHand.clear();
         clearConsole();
         myDeck.shuffle();
+        myDeck.splitTemp();
         newHand();
         pair = myDeck.checkPair(playerHand);
         input();
         dealerPlay();
+        
 
     }
     //shrimp
@@ -39,7 +42,6 @@ public class Core{
 
     private static String printList(ArrayList<String> list, boolean hide, boolean decodeTheList){
         String combindedString = "";
-        checkForBust(playerHand);
         if(decodeTheList) decodedList = decode.decodeList(list);
         else decodedList = list;
         System.out.println("\n");
@@ -74,10 +76,16 @@ public class Core{
                     bank -= pot;
                     pot *= 2;
                     hit();
+                    break;
                 case 4: //SPLIT
+                    splitCard = playerHand.get(1);
+                    playerHand.remove(1);
+                    hit();
+                    input();
+                    break;
                 default:
                     
-                    break;
+                    
             }
     }
 
