@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 public class Core{
     private static ArrayList<String> playerHand = new ArrayList<String>();
+    private static ArrayList<String> playerSplitHand = new ArrayList<String>();
     private static ArrayList<String> dealerHand = new ArrayList<String>();
     private static ArrayList<String> decodedList = new ArrayList<String>();
     static Deck myDeck = new Deck(1);
@@ -15,21 +16,20 @@ public class Core{
     static String splitCard = "";
     private static boolean checkForBust;
     public static void main(String[] args){
+        myDeck.shuffle();
+        myDeck.splitTemp();
         play();
-    }
+    } //CURRENT TASK: when splitting it returns the same deck
 
     private static void play(){
         dealersPlay = false;
         playerHand.clear();
-        clearConsole();
-        myDeck.shuffle();
-        myDeck.splitTemp();
+        playerSplitHand.clear();
         newHand();
         pair = myDeck.checkPair(playerHand);
         input();
         dealerPlay();
         
-
     }
     //shrimp
 
@@ -71,6 +71,7 @@ public class Core{
                     input();
                     break;
                 case 2: //STAND
+                    if(splitCard != "") playerSplitHand = playerHand;
                     break;
                 case 3: //DOUBLE
                     bank -= pot;
@@ -84,8 +85,14 @@ public class Core{
                     input();
                     break;
                 default:
-                    
-                    
+            }
+
+            if(splitCard != ""){
+                playerHand.clear();
+                playerHand.add(splitCard);
+                splitCard = "";
+                hit();
+                input();
             }
     }
 
@@ -96,18 +103,18 @@ public class Core{
             checkForBust(dealerHand);
         }
         show(false);
-        handResults();
+        handResults(playerHand);
+        if(playerSplitHand.size() == 0) handResults(playerSplitHand);
     }
 
-    private static void handResults(){
-        clearConsole();
+    private static void handResults(ArrayList<String> hand){
         displayCards(false);
         /*
             1 = player wins
             2 = dealers wins
             default = push
         */
-        switch(whoWins()){
+        switch(whoWins(hand)){
             case 1:
                 System.out.println("player wins");
                 break;
@@ -126,16 +133,18 @@ public class Core{
 
     }
 
-    public static void hit(){
+   public static void hit(){
         playerHand.add(myDeck.pullCard());
         if(checkForBust(playerHand)){
-            whoWins();
+            //whoWins();
         } 
-    }
+    } 
 
     private static void displayCards(boolean hideDealer){
         clearConsole();
-        System.out.printf("BANK:%s\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:\n%s\n---------------------------------------",bank ,printList(dealerHand, hideDealer ,true), pot ,printList(playerHand, false, true));
+        System.out.printf("BANK:%s\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:\n%s2",bank ,printList(dealerHand, hideDealer ,true), pot ,printList(playerHand, false, true));
+
+        if(playerSplitHand.size() != 0) System.out.printf("Your Hand #2:\n%s\n", printList(playerSplitHand, false, true));
        // + printList(dealerHand, hideDealer ,true) +"\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
        // + "\n---------------------------------------");
     }
@@ -171,25 +180,24 @@ public class Core{
         pause();
     }
 
-    private static int whoWins(){
-        if(checkForBust(playerHand)){
+    private static int whoWins(ArrayList<String> hand){
+        if(checkForBust(hand)){
             return 2; //player busts
         }
         else
         {
-            if(checkForBust(dealerHand)){
+            if(checkForBust(hand)){
                 return 1; //dealer busts too
             }
             else{
-                if(getTotal(playerHand) > getTotal(dealerHand)){
+                if(getTotal(hand) > getTotal(dealerHand)){
                     return 1;
                 }
-                else if(getTotal(playerHand) == getTotal(dealerHand)){
+                else if(getTotal(hand) == getTotal(dealerHand)){
                     return 3;
                 }
                 else{
                     return 2; 
-                    
                 }
             }
         }
