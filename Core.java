@@ -11,15 +11,16 @@ public class Core{
     static Scanner scan = new Scanner(System.in);
     static boolean pair = false;
     static boolean dealersPlay = false;
+    static String splitStatus = "false";
     static int pot = 5;
     static int bank = 1000;
-    static String splitCard = "";
-    private static boolean checkForBust;
+    //static String splitCard = "";
+    //private static boolean checkForBust;
     public static void main(String[] args){
         myDeck.shuffle();
         myDeck.splitTemp();
         play();
-    } //CURRENT TASK: when splitting it returns the same deck
+    } //CURRENT TASK: when check win check for split win
 
     private static void play(){
         dealersPlay = false;
@@ -29,7 +30,6 @@ public class Core{
         pair = myDeck.checkPair(playerHand);
         input();
         dealerPlay();
-        
     }
     //shrimp
 
@@ -53,7 +53,7 @@ public class Core{
         return combindedString;
     }
 
-    private static void input(){ // myDeck.check(playerHand) is used to get the bool "pair"
+    private static void input(){ //myDeck.check(playerHand) is used to get the bool "pair"
             int input;
             show(true);
             do{ 
@@ -67,32 +67,33 @@ public class Core{
             while(true);
             switch(input){
                 case 1: //HIT
-                    hit();
+                    if(splitStatus == "hand2") hit(playerSplitHand);
+                    else hit(playerHand);
                     input();
                     break;
                 case 2: //STAND
-                    if(splitCard != "") playerSplitHand = playerHand;
+                    
                     break;
                 case 3: //DOUBLE
                     bank -= pot;
                     pot *= 2;
-                    hit();
+                    hit(playerHand);
                     break;
                 case 4: //SPLIT
-                    splitCard = playerHand.get(1);
-                    playerHand.remove(1);
-                    hit();
+                    splitStatus = "hand1";
+                    playerSplitHand.add(playerHand.get(0)); //get the first card of players hand and add it to split
+                    playerHand.remove(0); //remove 1st card
+                    hit(playerHand); 
+                    hit(playerSplitHand);
                     input();
                     break;
                 default:
             }
 
-            if(splitCard != ""){
-                playerHand.clear();
-                playerHand.add(splitCard);
-                splitCard = "";
-                hit();
+            if(splitStatus == "hand1"){
+                splitStatus = "hand2";
                 input();
+                        
             }
     }
 
@@ -122,6 +123,7 @@ public class Core{
                 System.out.println("dealer wins");
                 break;
             default:
+                
                 System.out.println("push");
                 break;
         }
@@ -130,11 +132,10 @@ public class Core{
         pause();
         
         play();
-
     }
 
-   public static void hit(){
-        playerHand.add(myDeck.pullCard());
+   public static void hit(ArrayList<String> hand){
+        hand.add(myDeck.pullCard());
         if(checkForBust(playerHand)){
             //whoWins();
         } 
@@ -142,20 +143,26 @@ public class Core{
 
     private static void displayCards(boolean hideDealer){
         clearConsole();
-        System.out.printf("BANK:%s\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:\n%s2",bank ,printList(dealerHand, hideDealer ,true), pot ,printList(playerHand, false, true));
+        System.out.printf("BANK:%s\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:%s\n%s",bank ,printList(dealerHand, hideDealer,true), pot ,stringBust(playerHand),printList(playerHand, false, true));
 
-        if(playerSplitHand.size() != 0) System.out.printf("Your Hand #2:\n%s\n", printList(playerSplitHand, false, true));
+        if(splitStatus != "false") System.out.printf("Your Hand #2:%s\n%s\n", stringBust(playerSplitHand),printList(playerSplitHand, false, true));
        // + printList(dealerHand, hideDealer ,true) +"\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
        // + "\n---------------------------------------");
     }
 
     private static boolean checkForBust(ArrayList<String> list){
         int total = getTotal(list);
-        System.out.println(total);
         if(total > 21) {
             return true;
         }
         return false;
+    }
+    private static String stringBust(ArrayList<String> list){
+        int total = getTotal(list);
+        if(total > 21) {
+            return "(BUST)";
+        }
+        return "";
     }
 
     private static int getTotal(ArrayList<String> list){
