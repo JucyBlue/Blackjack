@@ -34,7 +34,6 @@ public class Decode {
             else{
                 decoded = Character.getNumericValue(wholeValue.charAt(wholeValue.length()-1));
             }
-           //if(decoded > 10) decoded = 10;
 
             return decoded;
             

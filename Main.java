@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class Main{
     private static ArrayList<String> playerHand = new ArrayList<String>();
     private static ArrayList<String> playerSplitHand = new ArrayList<String>();
@@ -12,20 +13,27 @@ public class Main{
     static boolean pair = false;
     static boolean dealersPlay = false;
     static String splitStatus = "false";
-    static int pot = 5;
+    static int pot;
     static int bank = 1000;
     //static String splitCard = "";
     //private static boolean checkForBust;
     public static void main(String[] args){
-        myDeck.shuffle();
-        myDeck.splitTemp();
-        play();
-    } //CURRENT TASK: when check win check for split win
+       myDeck.shuffle();
+       myDeck.splitTemp();
+        while(true){
+            play();
+            pause();
+            dealerHand.clear();
+        }
+        
+    } //CURRENT TASK: 
 
     private static void play(){
+        splitStatus = "";
         dealersPlay = false;
         playerHand.clear();
         playerSplitHand.clear();
+        pot = getBet();
         newHand();
         pair = myDeck.checkPair(playerHand);
         input();
@@ -37,6 +45,7 @@ public class Main{
         playerHand.add(myDeck.pullCard());
         playerHand.add(myDeck.pullCard());
         dealerHand.add(myDeck.pullCard());
+
         dealerHand.add(myDeck.pullCard());
     }
 
@@ -93,7 +102,6 @@ public class Main{
             if(splitStatus == "hand1"){
                 splitStatus = "hand2";
                 input();
-                        
             }
     }
 
@@ -104,37 +112,35 @@ public class Main{
             checkForBust(dealerHand);
         }
         show(false);
-        handResults(playerHand);
-        if(playerSplitHand.size() == 0) handResults(playerSplitHand);
+        displayCards(false);
+        handResults(playerHand, false);
+        if(splitStatus != "")handResults(playerSplitHand, true);
+        System.out.println("\n(ENTER)");
+        
     }
 
-    private static void handResults(ArrayList<String> hand){
-        displayCards(false);
+    private static void handResults(ArrayList<String> hand, boolean split){
+        
         /*
             1 = player wins
             2 = dealers wins
             default = push
         */
-
+            System.out.print("\n\nHAND:");
             switch(whoWins(hand)){
                 case 1:
-                    System.out.println("player wins");
+                    System.out.print("player wins");
                     break;
                 case 2:
-                    System.out.println("dealer wins");
+                    System.out.print("dealer wins");
                     break;
                 default:
-
-                    System.out.println("push");
+                    System.out.print("push");
                     break;
             }
-        
-        
-        System.out.printf(" P:%s D:%s", getTotal(playerHand), getTotal(dealerHand));
-        System.out.println("\n(ENTER)");
-        pause();
-        
-        play();
+            if(split) System.out.printf(" || P:%s D:%s", getTotal(playerSplitHand), getTotal(dealerHand));
+            else System.out.printf(" || P:%s D:%s", getTotal(playerHand), getTotal(dealerHand));
+
     }
 
    public static void hit(ArrayList<String> hand){
@@ -148,7 +154,7 @@ public class Main{
         clearConsole();
         System.out.printf("BANK:%s\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:%s\n%s",bank ,printList(dealerHand, hideDealer,true), pot ,stringBust(playerHand),printList(playerHand, false, true));
 
-        if(splitStatus != "false") System.out.printf("Your Hand #2:%s\n%s\n", stringBust(playerSplitHand),printList(playerSplitHand, false, true));
+        if(splitStatus != "") System.out.printf("Your Hand #2:%s\n%s\n", stringBust(playerSplitHand),printList(playerSplitHand, false, true));
        // + printList(dealerHand, hideDealer ,true) +"\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
        // + "\n---------------------------------------");
     }
@@ -165,18 +171,30 @@ public class Main{
         if(total > 21) {
             return "(BUST)";
         }
-        return "";
+        return String.valueOf(getTotal(list));
     }
 
     private static int getTotal(ArrayList<String> list){
+        int arrayTotal[] = new int[list.size()];
         int total = 0;
+        int totalx = 0;
         int singleValue;
         for(int i = 0; i < list.size(); i++){
             singleValue = decode.singleValue(list.get(i), "num");
             if(singleValue > 10) singleValue = 10;
-            total += singleValue;
+            arrayTotal[i] = singleValue;
         }
-        
+        for(int i = 0; i < list.size(); i++){                   //These for loops check and make aces into 11's when acceptable
+            for(int j = 0; j < list.size(); j++){
+                
+                if(j != i) totalx += arrayTotal[j];
+            }
+            
+            if(arrayTotal[i] == 1 && (totalx+11) <= 21) arrayTotal[i] = 11;
+        }                                                                                              
+        for(int i = 0; i < arrayTotal.length;i++){
+            total += arrayTotal[i];
+        }
         return total;
     }
 
@@ -196,7 +214,7 @@ public class Main{
         }
         else
         {
-            if(checkForBust(hand)){
+            if(checkForBust(dealerHand)){
                 return 1; //dealer busts too
             }
             else{
@@ -225,5 +243,16 @@ public class Main{
                 if(pair) System.out.print("4-SPLIT |");
                 System.out.print("\n:");    
     }
+
+    private static int getBet(){
+        clearConsole();
+        System.out.printf("BANK:%s\nMow much do you want to bet?\nAmount:", bank);
+        int num = scan.nextInt();
+        bank -= num;
+        return num;
+
+    }
+
+
 
 }
