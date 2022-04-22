@@ -1,10 +1,11 @@
 VERSION HISTORY:
     3/31/2022 - Barely functioning blackjack
     4/01/2022 - Fully funcation basic blackjack(No betting)
-    4/04/2022 - Fixed false win, basic pot(No splitting yet...)
+    4/04/2022 - Fixed false win, basic pot(No splitting yet)
     4/12/2022 - Play with splitting but no check win w/ split
     4/13/2022 - Splitting now fully works
     4/19/2022 - Aces now are worth 11 or 1 based on hand
+    4/22/2022 - Betting now works fully(i think...)
 
 NOTES:
     Delete the splitOgrinzaion
