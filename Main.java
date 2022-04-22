@@ -14,6 +14,8 @@ public class Main{
     static boolean dealersPlay = false;
     static String splitStatus = "false";
     static int pot;
+    static int splitPot;
+    static int orgPot;
     static int bank = 1000;
     //static String splitCard = "";
     //private static boolean checkForBust;
@@ -26,14 +28,15 @@ public class Main{
             dealerHand.clear();
         }
         
-    } //CURRENT TASK: 
+    } //CURRENT TASK: Can double when split and give winning accourdingly
 
     private static void play(){
         splitStatus = "";
         dealersPlay = false;
         playerHand.clear();
         playerSplitHand.clear();
-        pot = getBet();
+        orgPot = getBet();
+        pot = orgPot;
         newHand();
         pair = myDeck.checkPair(playerHand);
         input();
@@ -81,15 +84,17 @@ public class Main{
                     input();
                     break;
                 case 2: //STAND
-                    
                     break;
                 case 3: //DOUBLE
-                    bank -= pot;
-                    pot *= 2;
+                    if(splitStatus == "hand2")pot += orgPot;
+                    else splitPot += orgPot;
+                    bank -= orgPot;
                     hit(playerHand);
                     break;
                 case 4: //SPLIT
                     splitStatus = "hand1";
+                    splitPot = pot;
+                    bank -= pot;
                     playerSplitHand.add(playerHand.get(0)); //get the first card of players hand and add it to split
                     playerHand.remove(0); //remove 1st card
                     hit(playerHand); 
@@ -112,6 +117,13 @@ public class Main{
             checkForBust(dealerHand);
         }
         show(false);
+        if(splitStatus != ""){
+            pot /= 2;
+            if(whoWins(playerSplitHand) == 3) bank += pot;
+            else if(whoWins(playerSplitHand )== 1) bank += pot*2;
+        }
+        if(whoWins(playerHand) == 3) bank += pot;
+        else if(whoWins(playerHand )== 1) bank += pot*2;
         displayCards(false);
         handResults(playerHand, false);
         if(splitStatus != "")handResults(playerSplitHand, true);
@@ -130,6 +142,7 @@ public class Main{
             switch(whoWins(hand)){
                 case 1:
                     System.out.print("player wins");
+                    
                     break;
                 case 2:
                     System.out.print("dealer wins");
@@ -152,7 +165,7 @@ public class Main{
 
     private static void displayCards(boolean hideDealer){
         clearConsole();
-        System.out.printf("BANK:%s\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:%s\n%s",bank ,printList(dealerHand, hideDealer,true), pot ,stringBust(playerHand),printList(playerHand, false, true));
+        System.out.printf("BANK:%s\n---------------Blackjack---------------\nDrug Dealers Hand:\n%s\n\nPot:%s\n\nYour Hand:%s\n%s",bank ,printList(dealerHand, hideDealer,true), pot+splitPot ,stringBust(playerHand),printList(playerHand, false, true));
 
         if(splitStatus != "") System.out.printf("Your Hand #2:%s\n%s\n", stringBust(playerSplitHand),printList(playerSplitHand, false, true));
        // + printList(dealerHand, hideDealer ,true) +"\n\nYour Hand:\n" + printList(playerHand, false, true) // playerHand(list, hide, decodeList)
@@ -252,7 +265,4 @@ public class Main{
         return num;
 
     }
-
-
-
 }
