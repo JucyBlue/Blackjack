@@ -121,9 +121,11 @@ public class Main{
             pot /= 2;
             if(whoWins(playerSplitHand) == 3) bank += pot;
             else if(whoWins(playerSplitHand )== 1) bank += pot*2;
+            
         }
         if(whoWins(playerHand) == 3) bank += pot;
         else if(whoWins(playerHand )== 1) bank += pot*2;
+        
         displayCards(false);
         handResults(playerHand, false);
         if(splitStatus != "")handResults(playerSplitHand, true);
