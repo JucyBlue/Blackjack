@@ -8,7 +8,7 @@ VERSION HISTORY:
     4/22/2022 - Betting now works fully(i think...)
 
 NOTES:
-    Delete the splitOgrinzaion
+    Delete the split ogrinzaion
 
 
 
